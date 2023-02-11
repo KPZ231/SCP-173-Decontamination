@@ -21,6 +21,8 @@ public class SCP_173_Behaviour : MonoBehaviour
     public float killingDistance = 4f;
 
 
+
+
     Vector3 playerPos;
 
 
@@ -45,8 +47,8 @@ public class SCP_173_Behaviour : MonoBehaviour
 
             if (!cameraRenderer.isVisible)
             {
-               
-                transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform);
+
+                this.GetComponent<LookAt>().LookAtPlayer();
                 _Scp_173_Brain.isStopped = false;
                 canMove = true;
                 if (distance <= killingDistance)
@@ -72,6 +74,7 @@ public class SCP_173_Behaviour : MonoBehaviour
                     if (canMove)
                     {
                         GameObject.FindGameObjectWithTag("SCP").transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform);
+                        this.GetComponent<LookAt>().LookAtPlayer();
                         _Scp_173_Brain.SetDestination(playerPos);
                     }
                 }
@@ -96,7 +99,8 @@ public class SCP_173_Behaviour : MonoBehaviour
                         Kill();
                     }
 
-                    transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform);
+
+                    this.GetComponent<LookAt>().LookAtPlayer();
                     _Scp_173_Brain.isStopped = false;
                     canMove = true;
                     _Scp_173_Brain.SetDestination(playerPos);

@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -19,8 +21,21 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
+        StartCoroutine(StartFun());
         decals = FindObjectOfType<RandomPointInBox>().decals.Count;
         instance = this;
+    }
+
+    IEnumerator StartFun()
+    {
+        FindObjectOfType<Player_Movement>().canMove = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        FindObjectOfType<PauseManager>().canPause = false;
+
+        yield return new WaitForSeconds(8);
+
+        OkClicked();
     }
 
     public void RestartLevel()
@@ -39,6 +54,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if(PlayerPrefs.HasKey("Allowed Post_Processing"))
+        {           
+            Camera.main.gameObject.GetComponent<PostProcessLayer>().enabled = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             RestartLevel();
@@ -53,7 +73,23 @@ public class GameManager : MonoBehaviour
         {
             EndGame();
         }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            OkClicked();
+        }
     }
+
+    public void OkClicked()
+    {
+        FindObjectOfType<CountdownTimer>().start = true;
+        FindObjectOfType<Player_Movement>().canMove = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        FindObjectOfType<PauseManager>().canPause = true;
+        Destroy(GameObject.Find("Idea"));
+    }
+
     public void TimeEnded()
     {
         _TimeEndedUI.SetActive(true);
@@ -62,6 +98,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         PlayerOffLogic();
         FindObjectOfType<PauseManager>().canPause = false;
+        PlayerPrefs.SetString("Time", FindObjectOfType<CountdownTimer>().timerText.text);
         Time.timeScale = 0;
     }
 
@@ -73,6 +110,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         PlayerOffLogic();
         FindObjectOfType<PauseManager>().canPause = false;
+        PlayerPrefs.SetString("Time", FindObjectOfType<CountdownTimer>().timerText.text);
         Time.timeScale = 0;
     }
 
@@ -83,6 +121,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("TimeText").GetComponent<TextMeshProUGUI>().text = "You're Time Is: " + _timer.timerText.text;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        PlayerPrefs.SetString("Time", FindObjectOfType<CountdownTimer>().timerText.text);
         PlayerOffLogic();
         StartCoroutine(killing());
         if (canPlaySound)

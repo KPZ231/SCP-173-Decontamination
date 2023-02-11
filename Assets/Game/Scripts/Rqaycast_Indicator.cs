@@ -19,7 +19,7 @@ public class Rqaycast_Indicator : MonoBehaviour
                 || hit.collider.CompareTag("Broom") || hit.collider.CompareTag("Door_Button_2") || hit.collider.CompareTag("Keycard_Lvl_1_Door")
                 || hit.collider.CompareTag("Keycard_Lvl_1") || hit.collider.CompareTag("Cont_Door") || hit.collider.CompareTag("Shutters"))
             {
-                interactImage.SetActive(true);
+                interactImage.SetActive(true);               
             }
             else
             {

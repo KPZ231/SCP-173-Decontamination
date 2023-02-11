@@ -8,18 +8,23 @@ public class CountdownTimer : MonoBehaviour
 
     public float nowTime;
 
+    public bool start = false;
+
     void Start()
     {
         startTime = Time.time;
     }
 
     void Update()
-    {     
-        int t = (int)(Time.time - startTime);
-        int minutes = t / 60;
-        int seconds = t % 60;
+    {
+        if (start)
+        {
+            int t = (int)(Time.time - startTime);
+            int minutes = t / 60;
+            int seconds = t % 60;
 
-        nowTime = t;
-        timerText.text = minutes + ":" + seconds.ToString("D2");
+            nowTime = t;
+            timerText.text = minutes + ":" + seconds.ToString("D2");
+        }
     }
 }

@@ -19,6 +19,10 @@ public class CleainngManager : MonoBehaviour
     public float delay = 2f;
     public float seableDelay = 2f;
 
+
+
+    bool canPlaySound;
+
     private void Update()
     {
         delaySlider.value = seableDelay;
@@ -36,7 +40,6 @@ public class CleainngManager : MonoBehaviour
 
         if (canClean)
         {
-            
             Vector3 mousePos = Input.mousePosition;
 
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
@@ -48,53 +51,65 @@ public class CleainngManager : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Clenable"))
                 {
+
                     if (canClean == true)
-                    {                       
+                    {
                         if (Input.GetKeyDown(KeyCode.E))
                         {
+                            canPlaySound = true;
+
+                            if (canPlaySound)
+                            {
+                                FindObjectOfType<AudioManager>().Play("Broom_Sweeping");
+                                canPlaySound = false;
+                            }
+
                             canShowTimer = true;
-                            
+
                             GameObject hitted = hit.transform.gameObject;
+
                             Destroy(hitted);
                             GameManager.instance.decals -= 1;
                             Clean();
+
+
                         }
                     }
                 }
-                
-
             }
-
         }
     }
 
 
     void Clean()
-    {  
-        if(canClean == true)
+    {
+        if (canClean == true)
         {
             StartCoroutine("Cleaning");
-        }            
+        }
     }
 
     IEnumerator Cleaning()
     {
-        //First Section
-        //Bool
+
         canShowTimer = true;
         canClean = false;
         isCleaning = false;
-      //PlayerMovement
+
+
         FindObjectOfType<Player_Movement>().canMove = false;
 
-        //Second Section
-        //Waiting...
         yield return new WaitForSeconds(delay);
+
+
         canShowTimer = false;
-        //Bool
+
         isCleaning = false;
         canClean = true;
-        //PlayerMovement
+
         FindObjectOfType<Player_Movement>().canMove = true;
+
+
+
     }
 }

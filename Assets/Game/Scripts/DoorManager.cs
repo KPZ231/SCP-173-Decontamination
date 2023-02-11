@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -131,6 +132,8 @@ public class DoorManager : MonoBehaviour
                     else
                     {
                         FindObjectOfType<AudioManager>().Play("Card_Null");
+
+                        StartCoroutine(TextShow());
                     }
                 }
             }
@@ -185,14 +188,14 @@ public class DoorManager : MonoBehaviour
 
                         if (opened)
                         {
-                            //FindObjectOfType<AudioManager>().Play("Door_Open_1");
+                            FindObjectOfType<AudioManager>().Play("Shutter_Open");
                             GameObject.Find("Shutters_Main_OBJ").GetComponent<Animator>().Play("Shutters_Close");
                             opened = false;
                         }
 
                         if (!opened)
                         {
-                            //FindObjectOfType<AudioManager>().Play("Door_Close_1");
+                            FindObjectOfType<AudioManager>().Play("Shutter_Close");
                             opened = false;
                             GameObject.Find("Shutters_Main_OBJ").GetComponent<Animator>().Play("Shutters_Open");
                         }
@@ -202,6 +205,18 @@ public class DoorManager : MonoBehaviour
 
             #endregion
         }
+    }
+
+
+    IEnumerator TextShow()
+    {
+        GameObject.Find("InformationText").GetComponent<TextMeshProUGUI>().text = "For This Door You Need A Card";
+        GameObject.Find("InformationText").GetComponent<Animator>().Play("Draw_In_Text");
+        yield return new WaitForSeconds(2f);
+
+        GameObject.Find("InformationText").GetComponent<Animator>().Play("Draw_Out_Text");
+        yield return new WaitForSeconds(.40f);
+        GameObject.Find("InformationText").GetComponent<TextMeshProUGUI>().text = "";
     }
     IEnumerator Opening()
     {

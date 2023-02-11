@@ -11,10 +11,7 @@ public class PauseManager : MonoBehaviour
     public bool canPause;
 
 
-    private void Start()
-    {
-        canPause = true;
-    }
+   
 
     private void Update()
     {

@@ -26,6 +26,7 @@ public class PickUp : MonoBehaviour
             {  
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    hit.collider.gameObject.GetComponent<Collider>().enabled = false;
                     FindObjectOfType<Sway>().enabled = true;
                     FindObjectOfType<AudioManager>().Play("Pickup_1");
                     hit.transform.gameObject.SetActive(false);
@@ -37,7 +38,7 @@ public class PickUp : MonoBehaviour
         }
     }
 
-    string currentItem;
+    public string currentItem;
 
     void UseBroom()
     {
