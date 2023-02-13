@@ -1,1 +1,2 @@
-# SCP-173 Cleanup
+# SCP-173 Decontamination
+
